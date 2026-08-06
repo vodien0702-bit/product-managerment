@@ -62,7 +62,10 @@ block main
                 value=product.stock
                 min="0"
             )
-        div(class="form-group")
+        div(
+            class="form-group"
+            upload-image
+        )
             label(for="thumbnail") Ảnh
             input(
                 type="file"
@@ -77,6 +80,7 @@ block main
                 alt=product.title
                 upload-image-preview
                 class="image-preview"
+                style="width: 150px"
             )
         div(class="form-group")
             label(for="position") Vị trí
@@ -113,6 +117,4 @@ block main
             button(
                 type="submit"
                 class="btn btn-primary"
-            ) Cập nhật
-
-    script(src="/admin/script/products.js")     
+            ) Cập nhật   

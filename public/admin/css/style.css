@@ -88,3 +88,9 @@
     cursor: pointer;
 }
 /* End Alert */
+
+/* Upload Image */
+.image-preview[src=""] {
+    display: none;
+}
+/* End Upload Image */

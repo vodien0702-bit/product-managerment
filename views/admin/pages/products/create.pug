@@ -1,7 +1,6 @@
 extends ../../layouts/default.pug
-include ../../ mixins/alert-success.pug
+
 block main 
-    +alertSuccess(300)
     h1(class="mb-4") Thêm mới sản phẩm
 
     form(
@@ -57,7 +56,10 @@ block main
                 value="0"
                 min="0"
             )
-        div(class="form-group")
+        div(
+            class="form-group"
+            upload-image
+        )
             label(for="thumbnail") Ảnh
             input(
                 type="file"
@@ -65,6 +67,13 @@ block main
                 id="thumbnail"
                 name="thumbnail"
                 accept="image/*"
+                upload-image-input
+            )
+            img(
+                src=""
+                upload-image-preview
+                class="image-preview"
+                style="width: 150px"
             )
         div(class="form-group")
             label(for="position") Vị trí
@@ -100,5 +109,3 @@ block main
                 type="submit"
                 class="btn btn-primary"
             ) Tạo mới
-
-    script(src="/admin/script/products.js")     

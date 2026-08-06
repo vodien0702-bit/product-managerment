@@ -99,7 +99,7 @@ module.exports.changeMultiStatus = async (req, res) => {
     res.redirect(req.headers.referer || "/admin/products");
 }
 // [DELETE] /admin.products/delete/:id
-module.exports.delele = async (req, res) => {
+module.exports.delete = async (req, res) => {
     const id = req.params.id;
     await Product.updateOne({_id: id}, {deleted: true, deleteAt: new Date()});
     req.flash('success', 'Xóa sản phẩm thành công');

@@ -13,7 +13,7 @@ router.patch('/change-status/:status/:id', controller.status);
 
 router.patch('/change-multi-status', controller.changeMultiStatus);
 
-router.delete('/delete/:id', controller.delele);
+router.delete('/delete/:id', controller.delete);
 
 router.get('/create', controller.create);
 
