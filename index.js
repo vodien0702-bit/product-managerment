@@ -33,17 +33,16 @@ app.use(flash());
 // body-parser
 app.use(bodyParser.urlencoded({ extended: false }));
 // end body-parser
-app.set("views", path.join(__dirname, "views"));
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 routeAdmin(app);
 route(app);
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(`${__dirname}/public`));
 
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-module.exports = app
