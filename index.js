@@ -12,8 +12,8 @@ const routeAdmin = require('./routes/admin/index.route.js');
 const database = require('./config/database.js');
 const systemConfig = require('./config/systems.js');
 // DNS
-const dns = require('dns');
-dns.setServers(['8.8.8.8', '8.8.4.4']);
+// const dns = require('dns');
+// dns.setServers(['8.8.8.8', '8.8.4.4']);
 database.connect();
 
 const app = express();
