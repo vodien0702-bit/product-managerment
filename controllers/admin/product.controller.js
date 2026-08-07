@@ -124,9 +124,9 @@ module.exports.createPost = async (req, res) => {
     else {
         req.body.position = parseInt(req.body.position);
     }
-    if(req.file) {
-        req.body.thumbnail = `/uploads/${req.file.filename}`;
-    }
+    // if(req.file) {
+    //     req.body.thumbnail = `/uploads/${req.file.filename}`;
+    // }
     // console.log(req.file);
     const product = new Product(req.body);
     await product.save();
@@ -168,9 +168,9 @@ module.exports.editPatch = async (req, res) => {
         else {
             req.body.position = parseInt(req.body.position);
         }
-        if(req.file) {
-            req.body.thumbnail = `/uploads/${req.file.filename}`;
-        }
+        // if(req.file) {
+        //     req.body.thumbnail = `/uploads/${req.file.filename}`;
+        // }
         // console.log(req.file);
         await Product.updateOne({ _id: id}, req.body);
         req.flash('success', 'Cập nhật thành công');
