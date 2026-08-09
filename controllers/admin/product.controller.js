@@ -4,11 +4,24 @@ const searchHelper = require('../../helpers/search');
 const paginationHelper = require('../../helpers/pagination');
 const systemConfig = require('../../config/systems');
 module.exports.index = async (req, res) => {
-    // Filter Status
     const filterStatus = filterStatusHelper(req.query);
     let find = {
         deleted: false
     }
+    
+    // condition sort
+    let sort = {};
+    if(req.query.sortKey && req.query.sortValue) {
+        sort[req.query.sortKey] = req.query.sortValue;
+        // console.log(sort);
+
+    }
+    else {
+        sort.position = "desc";
+    }
+    // end condition sort
+    
+    // Filter Status
     if(req.query.status) {
         find.status = req.query.status;
     }
@@ -35,7 +48,7 @@ module.exports.index = async (req, res) => {
     );
     // End Pagination
     const products = await Product.find(find)
-    .sort({position: "desc"})
+    .sort(sort)
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);
     const newListPriceProduct = products.map(item => {

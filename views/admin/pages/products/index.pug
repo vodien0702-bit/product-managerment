@@ -4,6 +4,7 @@ include ../../mixins/search
 include ../../mixins/pagination
 include ../../mixins/form-change-multi
 include ../../mixins/alert-success
+include ../../mixins/sort
 block main
     +alertSuccess("5000")
     h1 Danh sách sản phẩm
@@ -16,6 +17,12 @@ block main
                     +filter-status(filterStatus)
                 .col-6        
                     +search(keyword)
+    .card-mb-3 
+        .card-header Sắp xếp
+        .card-body
+            .row
+                .col-4
+                    +sort
     .card.mb-3  
         .card-header Danh sách
         .card-body
