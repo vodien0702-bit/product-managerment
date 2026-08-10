@@ -76,7 +76,7 @@ module.exports.status = async (req, res) => {
 }
 // [PÂTCJ] /admin/products/change-multi-status
 module.exports.changeMultiStatus = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     const type = req.body.type;
     const ids = req.body.ids.split(", ");
     // console.log(type);
@@ -151,13 +151,13 @@ module.exports.createPost = async (req, res) => {
 module.exports.edit = async (req, res) => {
     try {
         const id = req.params.id;
-        console.log(id);
+        // console.log(id);
         const find = {
             deleted: false,
             _id: id
         }
         const product = await Product.findOne(find);
-        console.log(product)
+        // console.log(product)
         res.render('admin/pages/products/edit', {
             titlePage: "Chỉnh sửa sản phẩm",
             product: product

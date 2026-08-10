@@ -34,6 +34,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 // end body-parser
 
+// Tiny MCE
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+// End Tiny MCE
+
 // method-override
 app.use(methodOverride('_method'));
 // end method-ovverrid
