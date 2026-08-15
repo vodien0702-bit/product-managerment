@@ -64,7 +64,7 @@ module.exports.index = async (req, res) => {
     })
 }
 
-//[GET] /admin/products/change-status/:status/:id
+//[PATCH] /admin/products/change-status/:status/:id
 module.exports.status = async (req, res) => {
     const status = req.params.status;
     const id = req.params.id;
@@ -74,7 +74,7 @@ module.exports.status = async (req, res) => {
     // console.log(req.headers);
     res.redirect(req.headers.referer || "/admin/products");
 }
-// [PÂTCJ] /admin/products/change-multi-status
+// [PATCH] /admin/products/change-multi-status
 module.exports.changeMultiStatus = async (req, res) => {
     // console.log(req.body);
     const type = req.body.type;
@@ -93,6 +93,7 @@ module.exports.changeMultiStatus = async (req, res) => {
         case "delete-multi":
             await Product.updateMany({_id: { $in: ids }}, { deleted: true, deleteAt: new Date()});
             req.flash('success', `Xóa  ${ids.length} sản phẩm thành công`);
+            break;
         case "change-position":
             // console.log(req.body.ids);
             // console.log(ids);

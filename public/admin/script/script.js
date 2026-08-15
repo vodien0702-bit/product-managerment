@@ -19,6 +19,59 @@ if (buttonsStatus.length > 0) {
 }
 // End Button Status
 
+// Change Status
+const buttonsChangeStatus = document.querySelectorAll("[button-change-status]");
+if (buttonsChangeStatus.length > 0) {
+    const formChangeStatus = document.querySelector("#form-change-status");
+    const path = formChangeStatus.getAttribute("data-path");
+
+    buttonsChangeStatus.forEach(button => {
+        button.addEventListener('click', () => {
+            const statusCurrent = button.getAttribute('data-status');
+            const id = button.getAttribute('data-id');
+
+            let statusChange = statusCurrent == "active" ? "inActive" : "active";
+            // console.log(statusChange);
+            // console.log(id);
+            const action = path + `/${statusChange}/${id}?_method=PATCH`;
+            // console.log(action);
+            formChangeStatus.action = action;
+            formChangeStatus.submit();
+            // console.log(formChangeStatus);
+        })
+    })
+}
+// End Change Status
+
+// Delete Item Product
+const buttonsDelete = document.querySelectorAll("[button-delete]");
+const formDelete = document.querySelector("#form-delete");
+
+if (buttonsDelete.length > 0) {
+    // console.log(buttonsDelete);
+    buttonsDelete.forEach(button => {
+        button.addEventListener('click', () => {
+            if (formDelete) {
+                const isConfirm = confirm("Bạn có chắc muốn xóa sản phẩm này");
+                if (isConfirm) {
+                    const id = button.getAttribute("button-delete");
+                    console.log(id);
+                    const path = formDelete.getAttribute("data-path");
+                    const action = path + `/${id}?_method=DELETE`;
+                    formDelete.action = action;
+                    formDelete.submit();
+                }
+                else {
+                    return;
+                }
+            }
+
+        })
+    })
+}
+// End Delete Item Product
+
+
 // Form Search
 const formSearch = document.querySelector('#form-search');
 if (formSearch) {
@@ -152,7 +205,7 @@ if (formChangeMulti) {
 
 // Show Alert
 const showAlert = document.querySelector("[show-alert]");
-if(showAlert) {
+if (showAlert) {
     const time = parseInt(showAlert.getAttribute("data-time"));
     const buttonCloseAlert = showAlert.querySelector("[close-alert");
 
@@ -171,14 +224,14 @@ if(showAlert) {
 
 // Upload Image
 const uploadImage = document.querySelector("[upload-image]");
-if(uploadImage) {
+if (uploadImage) {
     const uploadImageInput = document.querySelector("[upload-image-input]");
     const uploadImagePreview = document.querySelector("[upload-image-preview]");
 
     uploadImageInput.addEventListener('change', (e) => {
         console.log(e);
         const file = e.target.files[0];
-        if(file) {
+        if (file) {
             uploadImagePreview.src = URL.createObjectURL(file);
         }
     });
@@ -188,11 +241,11 @@ if(uploadImage) {
 
 // Condition Sort
 const sort = document.querySelector("[sort]");
-if(sort) {
+if (sort) {
     const sortSelect = sort.querySelector("[sort-select]");
     const sortClear = sort.querySelector("[sort-clear]");
     let url = new URL(window.location.href);
-    if(sortSelect) {
+    if (sortSelect) {
         sortSelect.addEventListener('change', (e) => {
             const value = e.target.value;
             const [sortKey, sortValue] = value.split("-");
@@ -201,7 +254,7 @@ if(sort) {
             window.location.href = url.href;
         });
     }
-    if(sortClear) {
+    if (sortClear) {
         sortClear.addEventListener('click', () => {
             url.searchParams.delete("sortKey");
             url.searchParams.delete("sortValue");
@@ -210,8 +263,8 @@ if(sort) {
     }
     const sortKey = url.searchParams.get("sortKey");
     const sortValue = url.searchParams.get("sortValue");
-    
-    if(sortKey && sortValue) {
+
+    if (sortKey && sortValue) {
         const stringValue = `${sortKey}-${sortValue}`;
         const optionSelect = sortSelect.querySelector(`option[value=${stringValue}]`);
         optionSelect.selected = true;

@@ -59,13 +59,12 @@ block main
                             name="id"
                             value=item.id
                         )
-                    td #{index + 1}
+                    td #{objectPagination.limitItems*(objectPagination.currentPage - 1) + (index + 1)}
                     td
                         img(
                             src=item.thumbnail
                             alt=item.title
-                            width="100px"
-                            height="auto"
+                            style="width: 100px; height: auto;"
                         )
                     td #{item.title}
                     td #{item.priceNew}$

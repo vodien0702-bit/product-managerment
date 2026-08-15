@@ -21,7 +21,8 @@ router.delete('/delete/:id', controller.delete);
 router.get('/create', controller.create);
 
 router.post(
-    '/create', upload.single('thumbnail'),
+    '/create', 
+    upload.single('thumbnail'),
     uploadImage.uploadImage,
     validate.createPost,
     controller.createPost
