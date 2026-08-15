@@ -1,17 +1,20 @@
 const Product = require('../../model/product.model');
+const ProductCategory = require('../../model/products-category.model');
+const createTree = require('../../helpers/createTree');
 const filterStatusHelper = require('../../helpers/filterStatus');
 const searchHelper = require('../../helpers/search');
 const paginationHelper = require('../../helpers/pagination');
 const systemConfig = require('../../config/systems');
+
 module.exports.index = async (req, res) => {
     const filterStatus = filterStatusHelper(req.query);
     let find = {
         deleted: false
     }
-    
+
     // condition sort
     let sort = {};
-    if(req.query.sortKey && req.query.sortValue) {
+    if (req.query.sortKey && req.query.sortValue) {
         sort[req.query.sortKey] = req.query.sortValue;
         // console.log(sort);
 
@@ -20,9 +23,9 @@ module.exports.index = async (req, res) => {
         sort.position = "desc";
     }
     // end condition sort
-    
+
     // Filter Status
-    if(req.query.status) {
+    if (req.query.status) {
         find.status = req.query.status;
     }
     // End Filter Status
@@ -30,7 +33,7 @@ module.exports.index = async (req, res) => {
     // Search
     const objectSearch = searchHelper(req.query);
     // End Search
-    if(objectSearch.regex) {
+    if (objectSearch.regex) {
         find.title = objectSearch.regex;
     }
     // End Search
@@ -48,11 +51,11 @@ module.exports.index = async (req, res) => {
     );
     // End Pagination
     const products = await Product.find(find)
-    .sort(sort)
-    .limit(objectPagination.limitItems)
-    .skip(objectPagination.skip);
+        .sort(sort)
+        .limit(objectPagination.limitItems)
+        .skip(objectPagination.skip);
     const newListPriceProduct = products.map(item => {
-        item.priceNew = (item.price * (100 - item.discountPercentage)/100).toFixed(2);
+        item.priceNew = (item.price * (100 - item.discountPercentage) / 100).toFixed(2);
         return item;
     })
     res.render('admin/pages/products/index', {
@@ -68,8 +71,8 @@ module.exports.index = async (req, res) => {
 module.exports.status = async (req, res) => {
     const status = req.params.status;
     const id = req.params.id;
-    
-    await Product.updateOne({_id: id}, {status: status});
+
+    await Product.updateOne({ _id: id }, { status: status });
     req.flash('success', 'Cập nhật trạng thái thành công');
     // console.log(req.headers);
     res.redirect(req.headers.referer || "/admin/products");
@@ -83,27 +86,27 @@ module.exports.changeMultiStatus = async (req, res) => {
     // console.log(ids);
     switch (type) {
         case "active":
-            await Product.updateMany({ _id: { $in: ids }}, { status: "active"});
+            await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
             req.flash('success', `Cập nhật trạng thái cho ${ids.length} sản phẩm thành công`);
             break;
         case "inActive":
-            await Product.updateMany({ _id: { $in: ids }}, { status: "inActive"});
+            await Product.updateMany({ _id: { $in: ids } }, { status: "inActive" });
             req.flash('success', `Cập nhật trạng thái cho ${ids.length} sản phẩm thành công`);
             break;
         case "delete-multi":
-            await Product.updateMany({_id: { $in: ids }}, { deleted: true, deleteAt: new Date()});
+            await Product.updateMany({ _id: { $in: ids } }, { deleted: true, deleteAt: new Date() });
             req.flash('success', `Xóa  ${ids.length} sản phẩm thành công`);
             break;
         case "change-position":
             // console.log(req.body.ids);
             // console.log(ids);
-            for(const item of ids){
+            for (const item of ids) {
                 let [id, position] = item.split("-");
                 // console.log(id);
                 // console.log(position);
                 position = parseInt(position);
 
-                await Product.updateOne({_id: id}, {position: position});
+                await Product.updateOne({ _id: id }, { position: position });
             }
             req.flash('success', `Thay đổi vị trí cho ${ids.length} sản phẩm thành công`);
             break;
@@ -115,15 +118,19 @@ module.exports.changeMultiStatus = async (req, res) => {
 // [DELETE] /admin.products/delete/:id
 module.exports.delete = async (req, res) => {
     const id = req.params.id;
-    await Product.updateOne({_id: id}, {deleted: true, deleteAt: new Date()});
+    await Product.updateOne({ _id: id }, { deleted: true, deleteAt: new Date() });
     req.flash('success', 'Xóa sản phẩm thành công');
     res.redirect(req.headers.referer || "/admin/products");
 }
 
 // [GET] /admin/products/create
 module.exports.create = async (req, res) => {
+    const categories = await ProductCategory.find({ deleted: false });
+    const newCategories = createTree.tree(categories);
+    // console.log(newCategories);
     res.render('admin/pages/products/create', {
-        titlePage: "Thêm mới sản phẩm"
+        titlePage: "Thêm mới sản phẩm",
+        categories: newCategories
     });
 }
 
@@ -131,7 +138,7 @@ module.exports.createPost = async (req, res) => {
     req.body.price = parseFloat(req.body.price);
     req.body.discountPercentage = parseFloat(req.body.discountPercentage);
     req.body.stock = parseInt(req.body.stock);
-    if(req.body.position == "") {
+    if (req.body.position == "") {
         const countProducts = await Product.countDocuments();
         req.body.position = countProducts + 1;
     }
@@ -158,10 +165,13 @@ module.exports.edit = async (req, res) => {
             _id: id
         }
         const product = await Product.findOne(find);
+        const categories = await ProductCategory.find({ deleted: false });
+        const newCategories = createTree.tree(categories);
         // console.log(product)
         res.render('admin/pages/products/edit', {
             titlePage: "Chỉnh sửa sản phẩm",
-            product: product
+            product: product,
+            categories: newCategories
         });
     } catch (error) {
         res.redirect('/admin/products');
@@ -175,7 +185,7 @@ module.exports.editPatch = async (req, res) => {
         req.body.price = parseFloat(req.body.price);
         req.body.discountPercentage = parseFloat(req.body.discountPercentage);
         req.body.stock = parseInt(req.body.stock);
-        if(req.body.position == "") {
+        if (req.body.position == "") {
             const countProducts = await Product.countDocuments();
             req.body.position = countProducts + 1;
         }
@@ -186,7 +196,7 @@ module.exports.editPatch = async (req, res) => {
         //     req.body.thumbnail = `/uploads/${req.file.filename}`;
         // }
         // console.log(req.file);
-        await Product.updateOne({ _id: id}, req.body);
+        await Product.updateOne({ _id: id }, req.body);
         req.flash('success', 'Cập nhật thành công');
         res.redirect(req.headers.referer || "/admin/products");
     } catch (error) {
@@ -198,13 +208,28 @@ module.exports.editPatch = async (req, res) => {
 // [GET] /admin/products/detail:slug
 
 module.exports.detail = async (req, res) => {
-    const find = {
-        deleted: false,
-        slug: req.params.slug
+    try {
+        const find = {
+            deleted: false,
+            slug: req.params.slug
+        };
+
+        const product = await Product.findOne(find);
+
+        let category = null;
+        if (product && product.product_category_id) {
+            category = await ProductCategory.findOne({
+                deleted: false,
+                _id: product.product_category_id
+            });
+        }
+
+        res.render('admin/pages/products/detail.pug', {
+            titlePage: req.params.slug,
+            product: product,
+            category: category // Chỉ có key category nếu category tồn tại
+        });
+    } catch (error) {
+        res.redirect('/admin/products');
     }
-    const product = await Product.findOne(find);
-    res.render('admin/pages/products/detail.pug', {
-        titlePage: req.params.slug,
-        product: product
-    });
 }

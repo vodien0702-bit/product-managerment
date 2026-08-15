@@ -3,9 +3,9 @@ extends ../../layouts/default.pug
 block main
     if (productCategory.title)
         h1(class="mb-4") #{productCategory.title}
-    if (productCategory.parent_id)
+    if (category && category.title)
         div(class="mb-4")
-            span Danh mục cha: #{productCategory.parent_id}
+            span Danh mục cha: <b>#{category.title}</b>
     if (productCategory.thumbnail)
         div(class="mb-4")
             img(

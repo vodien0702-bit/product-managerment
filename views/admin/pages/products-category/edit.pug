@@ -32,7 +32,7 @@ block main
             )
                 option(value="") --Chọn danh mục cha--
                 if(records)
-                    +select-tree(records)
+                    +select-tree(records, 1, productCategory.parent_id)
         div(class="form-group")
             label(for="desc") Mô tả
             textarea(

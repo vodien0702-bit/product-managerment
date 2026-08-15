@@ -71,9 +71,14 @@ module.exports.detail = async (req, res) => {
         slug: req.params.slug
     }
     const productCategory = await ProductCategory.findOne(find);
+    let category = null;
+    if(productCategory.parent_id) {
+        category = await ProductCategory.findOne({_id: productCategory.parent_id});
+    }
     res.render('admin/pages/products-category/detail.pug', {
         titlePage: req.params.slug,
-        productCategory: productCategory
+        productCategory: productCategory,
+        category: category
     });
 }
 
