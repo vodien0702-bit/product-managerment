@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require('path');
 const dns = require('dns');
-
+const moment = require('moment');
 require("dotenv").config();
 const route = require("./routes/client/index.route.js");
 const routeAdmin = require('./routes/admin/index.route.js');
@@ -26,6 +26,8 @@ app.set("view engine", "pug");
 
 // App locals (Khai báo biến toàn cục trước khi gọi Route)
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+app.locals.moment = moment;
+
 
 // Static files (Phục vụ file tĩnh trước khi chạy vào Routes)
 app.use(express.static(path.join(__dirname, "public")));

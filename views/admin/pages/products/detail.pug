@@ -1,6 +1,9 @@
 extends ../../layouts/default.pug
-
+include ../../mixins/alert-success
+include ../../mixins/alert-error
 block main
+    +alertSuccess(3000)
+    +alertError(3000)
     if (product.title)
         h1(class="mb-4") #{product.title}
     
@@ -37,8 +40,18 @@ block main
     if (product.description)
         div(class="mb-4") !{product.description}
 
-    a(
-        href=`${prefixAdmin}/products/edit/${product.id}`
-        class="btn btn-warning"
-    ) Chỉnh sửa
+    if(role.permissions.includes("products_edit"))
+        a(
+            href=`${prefixAdmin}/products/edit/${product.id}`
+            class="btn btn-warning"
+        ) Chỉnh sửa
+        a(
+            href=`${prefixAdmin}/products`
+            class="btn btn-primary"
+        ) Trở lại
+    else
+        a(
+            href=`${prefixAdmin}/products`
+            class="btn btn-primary"
+        ) Trở lại
     script(src="/admin/script/products.js") 

@@ -1,4 +1,10 @@
 extends ../../layouts/default
+include ../../mixins/alert-success
+include ../../mixins/alert-error
 
 block main
+    +alertSuccess(3000)
+    +alertError(3000)
     h1 Trang tổng quan
+    div #{user}
+    div #{role}

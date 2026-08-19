@@ -130,38 +130,33 @@ if (buttonsPagination.length > 0) {
 
 // Change-Multi status
 const checkboxMulti = document.querySelector("[checkbox-multi]");
-// console.log(checkboxMulti);
+
 if (checkboxMulti) {
     const inputCheckAll = checkboxMulti.querySelector("input[name='checkall']");
     const inputsId = checkboxMulti.querySelectorAll("input[name='id']");
 
-    inputCheckAll.addEventListener('click', () => {
-        if (inputCheckAll.checked) {
-            inputsId.forEach((input) => {
-                input.checked = true;
-            })
-        }
-        else {
+    // Chỉ xử lý checkall khi checkall thực sự tồn tại
+    if (inputCheckAll) {
+        inputCheckAll.addEventListener('click', () => {
             inputsId.forEach(input => {
-                input.checked = false;
-            })
-        }
-    });
+                input.checked = inputCheckAll.checked;
+            });
+        });
+    }
 
-    inputsId.forEach((input) => {
+    inputsId.forEach(input => {
         input.addEventListener('click', () => {
-            const countInputChecked = document.querySelectorAll("input[name='id']:checked").length;
-            if (countInputChecked == inputsId.length) {
-                inputCheckAll.checked = true;
-            }
-            else {
-                inputCheckAll.checked = false;
-            }
-        })
-    })
-    // console.log(inputCheckAll);
-    // console.log(inputsId);
+            if (!inputCheckAll) return;
+
+            const countInputChecked =
+                checkboxMulti.querySelectorAll("input[name='id']:checked").length;
+
+            inputCheckAll.checked =
+                countInputChecked === inputsId.length;
+        });
+    });
 }
+
 // End Change-Multi status
 
 // Form Change Multi
@@ -207,15 +202,16 @@ if (formChangeMulti) {
 const showAlert = document.querySelector("[show-alert]");
 if (showAlert) {
     const time = parseInt(showAlert.getAttribute("data-time"));
-    const buttonCloseAlert = showAlert.querySelector("[close-alert");
+    const buttonCloseAlert = showAlert.querySelector("[close-alert]");
 
     setTimeout(() => {
         showAlert.classList.add("alert-hidden");
     }, time);
-
-    buttonCloseAlert.addEventListener('click', () => {
-        showAlert.classList.add("alert-hidden");
-    })
+    if (buttonCloseAlert) {
+        buttonCloseAlert.addEventListener('click', () => {
+            showAlert.classList.add("alert-hidden");
+        })
+    }
 }
 
 

@@ -1,0 +1,49 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert-success
+include ../../mixins/alert-error
+block main
+    +alertSuccess(3000)
+    +alertError(3000)
+    if (user.fullName)
+        h1(class="mb-4") #{user.fullName}
+    
+    if (role.title)
+        div(class="mb-4") Quyền: <b>#{role.title}</b>
+
+    if (user.avatar)
+        div(class="mb-4")
+            span Avatar:   
+            img(
+                src=user.avatar
+                style="width: 100px"
+            )
+    
+    if (user.email)
+        div(class="mb-4") Email: <b>#{user.email}</b>
+    
+    if (user.phone)
+        div(class="mb-4") Số điện thoại: <b>#{user.phone}</b>
+ 
+    if (user.status)
+        div(class="mb-4")
+            span Trạng thái:
+            if (user.status == "active")
+                span(class="badge badge-success") Hoạt động
+            else 
+                span(class="badge badge-danger") Dừng hoạt động
+    
+
+    if(role.permissions.includes("accounts_edit"))
+        a(
+            href=`${prefixAdmin}/accounts/edit/${user.id}`
+            class="btn btn-warning"
+        ) Chỉnh sửa
+        a(
+            href=`${prefixAdmin}/accounts`
+            class="btn btn-primary"
+        ) Trở lại
+    else
+        a(
+            href=`${prefixAdmin}/accounts`
+            class="btn btn-primary"
+        ) Trở lại

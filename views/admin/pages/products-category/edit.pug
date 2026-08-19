@@ -5,7 +5,7 @@ include ../../mixins/select-tree.pug
 block main 
     +alertSuccess(3000)
     +alertError(3000)
-    h1(class="mb-4") Chỉnh sửa sản phẩm
+    h1(class="mb-4") Chỉnh sửa danh mục
 
     form(
         action=`${prefixAdmin}/products-category/edit/${productCategory.id}?_method=PATCH`

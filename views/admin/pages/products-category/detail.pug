@@ -27,8 +27,18 @@ block main
     if (productCategory.description)
         div(class="mb-4") !{productCategory.description}
 
-    a(
-        href=`${prefixAdmin}/products-category/edit/${productCategory.id}`
-        class="btn btn-warning"
-    ) Chỉnh sửa
+    if (role.permissions.includes("products-category_edit"))
+        a(
+            href=`${prefixAdmin}/products-category/edit/${productCategory.id}`
+            class="btn btn-warning"
+        ) Chỉnh sửa
+        a(
+            href=`${prefixAdmin}/products-category`
+            class="btn btn-primary"
+        ) Danh mục
+    else
+        a(
+            href=`${prefixAdmin}/products-category`
+            class="btn btn-primary"
+        ) Danh mục
     script(src="/admin/script/products-category.js") 
